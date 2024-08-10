@@ -304,43 +304,6 @@
                 ])
             ]);
         };
-        
-        let currentShip;
-        let editMode = false;
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const shipId = urlParams.get('id');
-            loadShip(shipId);
-        
-            document.getElementById('editModeToggle').addEventListener('click', toggleEditMode);
-            document.getElementById('toggleDarkMode').addEventListener('click', toggleDarkMode);
-            document.getElementById('decreaseHP').addEventListener('click', () => adjustHullPoints(-1));
-            document.getElementById('increaseHP').addEventListener('click', () => adjustHullPoints(1));
-            document.getElementById('addModule').addEventListener('click', showModuleDropdown);
-            document.getElementById('addWeapon').addEventListener('click', showWeaponDropdown);
-            document.getElementById('addUpgrade').addEventListener('click', showUpgradeDropdown);
-            document.getElementById('closePopup').addEventListener('click', closePopup);
-        
-            document.getElementById('confirmAddModule').addEventListener('click', confirmAddModule);
-            document.getElementById('cancelAddModule').addEventListener('click', hideModuleDropdown);
-            document.getElementById('confirmAddWeapon').addEventListener('click', confirmAddWeapon);
-            document.getElementById('cancelAddWeapon').addEventListener('click', hideWeaponDropdown);
-            document.getElementById('confirmAddUpgrade').addEventListener('click', confirmAddUpgrade);
-            document.getElementById('cancelAddUpgrade').addEventListener('click', hideUpgradeDropdown);
-        
-            // Add event listeners for cargo inputs
-            ['copperInput', 'silverInput', 'goldInput', 'platinumInput', 'cargoItems'].forEach(id => {
-                document.getElementById(id).addEventListener('change', saveShipChanges);
-            });
-        
-            // Populate dropdowns
-            populateDropdown('moduleSelect', wildjammerData.modules);
-            populateDropdown('weaponSelect', wildjammerData.weapons);
-            populateDropdown('upgradeSelect', wildjammerData.upgrades);
-        });
-        
-        // The rest of your existing functions (loadShip, updateShipDisplay, etc.) should follow here
         let currentShip;
         let editMode = false;
     
