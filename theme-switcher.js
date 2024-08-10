@@ -240,22 +240,17 @@ function displayShips(shipsToDisplay) {
     console.error('Ship list element not found');
     return;
   }
-
   shipList.innerHTML = '';
-
   if (!Array.isArray(shipsToDisplay) || shipsToDisplay.length === 0) {
     shipList.innerHTML = '<p>No ships found. Create a new Wildjammer to get started!</p>';
     return;
   }
-
   const fragment = document.createDocumentFragment();
-
-  shipsToDisplay.forEach(ship => {
+  shipsToDisplay.forEach(({id, ship}) => {
     if (!ship || typeof ship !== 'object') {
       console.warn('Invalid ship object encountered');
       return;
     }
-
     const shipCard = document.createElement('div');
     shipCard.className = 'ship-card';
     shipCard.innerHTML = `
@@ -266,15 +261,14 @@ function displayShips(shipsToDisplay) {
       <div class="ship-card-content">
         <p class="ship-captain">Captain: ${ship.captain || 'No Captain Assigned'}</p>
         <div class="ship-actions">
-          <a href="wildjammer-view-ship.html?id=${ship.id}" class="magical-glow">VIEW</a>
-          <a href="wildjammer-create-ship.html?id=${ship.id}" class="magical-glow">EDIT</a>
-          <button onclick="deleteShip('${ship.id}')" class="magical-glow">DELETE</button>
+          <a href="wildjammer-view-ship.html?id=${id}" class="magical-glow">VIEW</a>
+          <a href="wildjammer-create-ship.html?id=${id}" class="magical-glow">EDIT</a>
+          <button onclick="deleteShip('${id}')" class="magical-glow">DELETE</button>
         </div>
       </div>
     `;
     fragment.appendChild(shipCard);
   });
-
   shipList.appendChild(fragment);
   updateDynamicClasses();
 }
