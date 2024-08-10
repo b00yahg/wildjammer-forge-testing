@@ -94,34 +94,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
             const shipId = urlParams.get('id');
-    
-            if (shipId) {
-                // We're in edit mode
-                editingShipId = shipId;
-                const ships = JSON.parse(localStorage.getItem('wildjammerShips')) || {};
-                const shipToEdit = ships[shipId];
-    
-                if (shipToEdit) {
-                    // Populate the form with existing ship data
-                    document.getElementById('shipName').value = shipToEdit.name;
-                    document.getElementById('hullType').value = shipToEdit.hullType;
-                    document.getElementById('helmType').value = shipToEdit.helmType;
-                    document.getElementById('captain').value = shipToEdit.captain;
-                    document.getElementById('helmsman').value = shipToEdit.helmsman;
-                    document.getElementById('boatswain').value = shipToEdit.boatswain;
-                    document.getElementById('gunner1').value = shipToEdit.gunner1;
-                    document.getElementById('gunner2').value = shipToEdit.gunner2;
-                    document.getElementById('gunner3').value = shipToEdit.gunner3;
-                    document.getElementById('fighterHelmsman1').value = shipToEdit.fighterHelmsman1;
-                    document.getElementById('fighterHelmsman2').value = shipToEdit.fighterHelmsman2;
-                    document.getElementById('fighterHelmsman3').value = shipToEdit.fighterHelmsman3;
-    
-                    // Change the button text to "Update Ship"
-                    document.getElementById('createShipButton').textContent = 'Update Ship';
-                }
-            }
-        
-        document.addEventListener('DOMContentLoaded', function() {
+
             // Populate hull type options
             const hullTypeSelect = document.getElementById('hullType');
             for (const [key, value] of Object.entries(wildjammerData.hulls)) {
@@ -138,6 +111,32 @@
                 option.value = key;
                 option.textContent = value.name;
                 helmTypeSelect.appendChild(option);
+            }
+
+            if (shipId) {
+                // We're in edit mode
+                editingShipId = shipId;
+                const ships = JSON.parse(localStorage.getItem('wildjammerShips')) || {};
+                const shipToEdit = ships[shipId];
+
+                if (shipToEdit) {
+                    // Populate the form with existing ship data
+                    document.getElementById('shipName').value = shipToEdit.name;
+                    document.getElementById('hullType').value = shipToEdit.hullType;
+                    document.getElementById('helmType').value = shipToEdit.helmType;
+                    document.getElementById('captain').value = shipToEdit.captain;
+                    document.getElementById('helmsman').value = shipToEdit.helmsman;
+                    document.getElementById('boatswain').value = shipToEdit.boatswain;
+                    document.getElementById('gunner1').value = shipToEdit.gunner1;
+                    document.getElementById('gunner2').value = shipToEdit.gunner2;
+                    document.getElementById('gunner3').value = shipToEdit.gunner3;
+                    document.getElementById('fighterHelmsman1').value = shipToEdit.fighterHelmsman1;
+                    document.getElementById('fighterHelmsman2').value = shipToEdit.fighterHelmsman2;
+                    document.getElementById('fighterHelmsman3').value = shipToEdit.fighterHelmsman3;
+
+                    // Change the button text to "Update Ship"
+                    document.getElementById('createShipButton').textContent = 'Update Ship';
+                }
             }
 
             document.getElementById('createShipButton').addEventListener('click', createShip);
