@@ -207,9 +207,10 @@
             const handleAddCustomCrew = () => {
                 if (customCrewName && customCrewDayRate && customCrewMonthRate) {
                     onAddCustomCrew({
-                        type: customCrewName,
+                        type: `Custom: ${customCrewName}`,
                         dayRate: parseFloat(customCrewDayRate),
-                        monthRate: parseFloat(customCrewMonthRate)
+                        monthRate: parseFloat(customCrewMonthRate),
+                        count: 0
                     });
                     setShowCustomCrewForm(false);
                     setCustomCrewName('');
@@ -237,7 +238,7 @@
                                     React.createElement('input', {
                                         type: "number",
                                         value: crew.count,
-                                        onChange: (e) => onCrewChange(index, parseInt(e.target.value)),
+                                        onChange: (e) => onCrewChange(index, parseInt(e.target.value) || 0),
                                         min: "0",
                                         className: "w-16 text-center"
                                     })
@@ -346,16 +347,31 @@
                     currentShip = new Ship(shipData);
                     console.log('Loaded ship:', currentShip);
                     
-                    // Ensure crewComplement is initialized
-                    if (!currentShip.crewComplement || !Array.isArray(currentShip.crewComplement)) {
-                        currentShip.crewComplement = [
-                            { type: "Green Crew", count: 0, dayRate: 1.5, monthRate: 45 },
-                            { type: "Veteran Crew", count: 0, dayRate: 3, monthRate: 90 },
-                            { type: "Mercenaries", count: 0, dayRate: 5, monthRate: 150 },
-                            { type: "Giff Mercenaries", count: 0, dayRate: 6.5, monthRate: 195 },
-                            { type: "Hurwaeti Mercenaries", count: 0, dayRate: 8, monthRate: 240 }
-                        ];
+                    // Ensure crewComplement is initialized with default crew types
+                    const defaultCrewTypes = [
+                        { type: "Green Crew", count: 0, dayRate: 1.5, monthRate: 45 },
+                        { type: "Veteran Crew", count: 0, dayRate: 3, monthRate: 90 },
+                        { type: "Mercenaries", count: 0, dayRate: 5, monthRate: 150 },
+                        { type: "Giff Mercenaries", count: 0, dayRate: 6.5, monthRate: 195 },
+                        { type: "Hurwaeti Mercenaries", count: 0, dayRate: 8, monthRate: 240 }
+                    ];
+            
+                    if (!Array.isArray(currentShip.crewComplement)) {
+                        currentShip.crewComplement = [];
                     }
+            
+                    // Ensure all default crew types are present
+                    defaultCrewTypes.forEach(defaultCrew => {
+                        const existingCrew = currentShip.crewComplement.find(crew => crew.type === defaultCrew.type);
+                        if (!existingCrew) {
+                            currentShip.crewComplement.push({ ...defaultCrew });
+                        }
+                    });
+            
+                    // Keep any custom crew types that were added
+                    currentShip.crewComplement = currentShip.crewComplement.filter(crew => 
+                        defaultCrewTypes.some(defaultCrew => defaultCrew.type === crew.type) || crew.type.startsWith("Custom")
+                    );
                     
                     // Ensure weaponModifiers is initialized
                     currentShip.weaponModifiers = currentShip.weaponModifiers || {};
@@ -439,9 +455,10 @@
                     onCrewChange: (index, newCount) => {
                         currentShip.crewComplement[index].count = newCount;
                         saveShipChanges();
+                        renderCrewComplementTable(); // Re-render to update totals
                     },
                     onAddCustomCrew: (newCrew) => {
-                        currentShip.crewComplement.push({ ...newCrew, count: 0 });
+                        currentShip.crewComplement.push(newCrew);
                         saveShipChanges();
                         renderCrewComplementTable();
                     }
