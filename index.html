@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wildjammer Ship Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative&family=Space+Grotesk&family=Spectral&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="spelljammer-style.css">
+    <script src="wildjammer-data.js"></script>
+    <script src="ship-class.js"></script>
+    <script src="theme-switcher.js" defer></script>
+    <style>
+        .container {
+            backdrop-filter: blur(10px);
+        }
+        .ship-card {
+            transition: all 0.3s ease;
+        }
+        .ship-card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <div class="cosmic-dust"></div>
+    <div class="container">
+        <div class="header-container">
+            <h1 id="my-wildjammers" class="astral-text">My Wildjammers</h1>
+            <div class="button-container">
+                <a href="wildjammer-create-ship.html" class="magical-glow">CREATE A WILDJAMMER</a>
+                <button id="toggleDarkMode" class="magical-glow">Toggle Dark Mode</button>
+            </div>
+        </div>
+        <div class="search-sort-container">
+            <input type="text" id="searchInput" placeholder="Search by Name, Model, or Size" class="steampunk-input">
+            <select id="sortSelect" class="steampunk-input">
+                <option value="nameAsc">Name: A-Z</option>
+                <option value="nameDesc">Name: Z-A</option>
+                <option value="sizeAsc">Size: Smallest to Largest</option>
+                <option value="sizeDesc">Size: Largest to Smallest</option>
+            </select>
+        </div>
+        <div id="shipList" class="ship-list constellation-bg">
+            <!-- Ship cards will be inserted here by JavaScript -->
+        </div>
+    </div>
+    <div id="loadingIndicator" class="loading-container" style="display: none;"></div>
+    <select id="bgImageSelect" class="steampunk-input"></select>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePage();
+        });
+    </script>
+</body>
+</html>
